@@ -30,7 +30,7 @@ public class AddTaskMenu extends JPanel {
         descriptionArea.setWrapStyleWord(true);
 
         // Status Dropdown
-        statusBox = new JComboBox<>(new String[]{"Pending", "In Progress", "Completed"});
+        statusBox = new JComboBox<>(new String[]{"pending", "in progress", "completed"});
 
         // Date Picker (using Spinner)
         SpinnerDateModel dateModel = new SpinnerDateModel(new java.util.Date(), null, null, Calendar.DAY_OF_MONTH);

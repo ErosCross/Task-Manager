@@ -67,6 +67,7 @@ public class TaskManager extends JFrame {
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
+
             loadTasks(tasksPanel);
         });
 
@@ -125,6 +126,23 @@ public class TaskManager extends JFrame {
         doneButton.setBackground(new Color(0, 153, 102));
         doneButton.setForeground(Color.WHITE);
 
+
+        // Edit button
+
+        JButton editButton = new JButton("⚙");
+        editButton.setPreferredSize(new Dimension(50, 30));
+        editButton.setFocusPainted(false);
+        editButton.setBackground(new Color(102, 153, 204));
+        editButton.setForeground(Color.WHITE);
+        editButton.addActionListener(e -> {
+            JDialog dialog = new JDialog(this, "Modify Task", true);
+            dialog.setContentPane(new ModifyTaskMenu(dialog,title, description, status, dueDate));
+            dialog.pack();
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+
+        });
+
         // Remove button
         JButton removeButton = new JButton("✖");
         removeButton.setPreferredSize(new Dimension(50, 30));
@@ -144,6 +162,7 @@ public class TaskManager extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
         buttonPanel.add(doneButton);
+        buttonPanel.add(editButton);
         buttonPanel.add(removeButton);
 
         taskItem.add(textPanel, BorderLayout.CENTER);
@@ -154,15 +173,17 @@ public class TaskManager extends JFrame {
         container.repaint();
     }
     public void loadTasks(JPanel container) {
+        container.removeAll(); // ✅ Clear existing tasks from the panel
+
         Connector con = new Connector();
         for (Task task : con.getTasks()) {
-            if (!task.getAdded()) {
-                addTask(container, task.getTitle(), task.getDescription(), task.getStatus(), task.getDueDate());
-                task.setAdded();
-            }
-
+            addTask(container, task.getTitle(), task.getDescription(), task.getStatus(), task.getDueDate());
         }
+
+        container.revalidate(); // ✅ Refresh UI
+        container.repaint();
     }
+
 
 
 

@@ -81,6 +81,9 @@ public class Connector {
             }
         }
     }
+    public void editTask(String title, String description, int status, Date date) {
+
+    }
 
 
 
