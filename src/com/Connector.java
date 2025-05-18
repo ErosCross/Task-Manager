@@ -81,11 +81,42 @@ public class Connector {
             }
         }
     }
-    public void editTask(String title, String description, int status, Date date) {
+    public void editTask(String oldTitle, String currentTitle, String description, int status, Date date) {
+        List<Task> tasks = this.getTasks();
+        for (Task task : tasks) {
+            if (task.getTitle().equals(oldTitle)) {
+                String sql = "UPDATE tasks SET title = ?, description = ?, status = ?, due_date = ? WHERE title = ?";
 
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/taskmanager", "root", "1234");
+                     PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+                    pstmt.setString(1, currentTitle);
+                    pstmt.setString(2, description);
+                    String[] statusOptions = {"pending", "in_progress", "completed"};
+                    pstmt.setString(3, statusOptions[status]); // ✅ נכון
+                    pstmt.setDate(4, new java.sql.Date(date.getTime()));
+                    pstmt.setString(5, oldTitle);
+
+                    int rowsAffected = pstmt.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Task successfully updated!");
+
+                    } else {
+                        System.out.println("No task found with the title: " + oldTitle);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 
 
-
-
 }
+
+
+
+
+

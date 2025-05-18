@@ -140,6 +140,7 @@ public class TaskManager extends JFrame {
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
+            loadTasks(container);
 
         });
 
